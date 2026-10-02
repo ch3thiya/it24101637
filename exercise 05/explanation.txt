@@ -1,0 +1,7 @@
+When the source and destination do not match in MPI (for example, if rank 0 sends to rank 1, but rank 1 expects to receive from rank 2), a deadlock or hanging situation occurs.
+
+What happens specifically:
+1. Process 0 successfully executes its `MPI_Send` (for small messages, it buffers locally and moves on, eventually reaching `MPI_Finalize`).
+2. Process 1 reaches `MPI_Recv` and blocks indefinitely because it is waiting for a message from Process 2.
+3. Process 2 (if it exists) doesn't send any message, or if it doesn't exist, the receive call waits on a non-existent sender.
+4. Because Process 1 never completes its `MPI_Recv`, it hangs forever and the MPI program never successfully terminates (MPI_Finalize is never reached by all processes). The terminal will just hang, requiring you to manually kill the program (e.g., using Ctrl+C).
