@@ -1,0 +1,100 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>MPI Performance Analysis</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background-color: #f4f4f9; color: #333; }
+            .chart-container { width: 80%; max-width: 800px; margin: 20px 0; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        </style>
+    </head>
+    <body>
+        <h2>Exercise 1 (Parallel Sum) & Exercise 2 (Monte Carlo Pi)</h2>
+        
+        <div class="chart-container">
+            <canvas id="timeChart"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="speedupChart"></canvas>
+        </div>
+
+        <script>
+            const labels = [1, 2, 3, 4];
+            
+            const timeCtx = document.getElementById('timeChart').getContext('2d');
+            new Chart(timeCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Ex 1: Parallel Sum Time (s)',
+                            data: [0.2999145984649658, 0.28887176513671875, 0.2949542999267578, 0.30130457878112793],
+                            borderColor: 'blue',
+                            fill: false,
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Ex 2: Monte Carlo Pi Time (s)',
+                            data: [4.5828094482421875, 2.5495283603668213, 2.0122432708740234, 1.7281568050384521],
+                            borderColor: 'red',
+                            fill: false,
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { title: { display: true, text: 'Execution Time vs Number of Processors' } },
+                    scales: {
+                        x: { title: { display: true, text: 'Number of Processors' } },
+                        y: { title: { display: true, text: 'Time (Seconds)' }, min: 0 }
+                    }
+                }
+            });
+
+            const speedupCtx = document.getElementById('speedupChart').getContext('2d');
+            new Chart(speedupCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Ex 1: Parallel Sum Speedup',
+                            data: [1.0, 1.0382274582045796, 1.0168171765573166, 0.9953867932515827],
+                            borderColor: 'blue',
+                            fill: false,
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Ex 2: Monte Carlo Pi Speedup',
+                            data: [1.0, 1.7975126378209112, 2.27746292636458, 2.6518481626672865],
+                            borderColor: 'red',
+                            fill: false,
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Ideal Speedup',
+                            data: labels,
+                            borderColor: 'green',
+                            borderDash: [5, 5],
+                            fill: false,
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { title: { display: true, text: 'Speedup vs Number of Processors' } },
+                    scales: {
+                        x: { title: { display: true, text: 'Number of Processors' } },
+                        y: { title: { display: true, text: 'Speedup' }, min: 0 }
+                    }
+                }
+            });
+        </script>
+    </body>
+    </html>
+    
